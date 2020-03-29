@@ -1,6 +1,10 @@
 let app = new Vue({
     el: "#app",
     data: {
+        purchaseRange: {
+            "min": 90,
+            "max": 110
+        },
         form: { 
             "purchase": 0, 
             "monAm": 0, 
@@ -41,20 +45,38 @@ let app = new Vue({
             ];
         },
         filteredRows: function () {
+            let currentStep = this.form.purchase - this.purchaseRange.min;
+            let stepCount = this.purchaseRange.max - this.purchaseRange.min + 1;
             let values = this.formDayOfWeekList;
-            return this.rows.filter(row => {
-                if (!this.range(this.form.purchase, row.purchase)) {
-                    return false;
-                }
+            return this.rows
+                .map(row => {
+                    return row.predictions
+                        .map(pred => {
+                            if (this.form.purchase === 0 || 
+                                this.form.purchase === '0') {
+                                return {
+                                    "min": pred.lowMin,
+                                    "max": pred.highMax
+                                };
+                            }
 
-                let predictions = row.predictions;
-                for (let i = 0; i < row.predictions.length; i++) {
-                    if (!this.range(values[i], predictions[i])) {
-                        return false;
+                            let minStepValue = (pred.highMin - pred.lowMin + 1) / stepCount;
+                            let maxStepValue = (pred.highMax - pred.lowMax + 1) / stepCount;
+
+                            return {
+                                "min": pred.lowMin + Math.round(minStepValue * currentStep),
+                                "max": pred.lowMax + Math.ceil(maxStepValue * currentStep)
+                            };
+                        });
+                })
+                .filter(row => {
+                    for (let idx = 0; idx < row.length; idx++) {
+                        if (!this.range(values[idx], row[idx])) {
+                            return false;
+                        }
                     }
-                }
-                return true;
-            });
+                    return true;
+                });
         }
     },
     methods: {
