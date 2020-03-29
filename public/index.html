@@ -1,65 +1,203 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>동물의숲 무가격 예측</title>
+    
+        <!-- update the version number as needed -->
+        <script defer src="/__/firebase/7.13.1/firebase-app.js"></script>
+        <!-- include only the Firebase features as you need -->
+        <script defer src="/__/firebase/7.13.1/firebase-auth.js"></script>
+        <script defer src="/__/firebase/7.13.1/firebase-database.js"></script>
+        <script defer src="/__/firebase/7.13.1/firebase-messaging.js"></script>
+        <script defer src="/__/firebase/7.13.1/firebase-storage.js"></script>
+        <!-- initialize the SDK after all desired features are loaded -->
+        <script defer src="/__/firebase/init.js"></script>
+    
+        <!-- styles -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    </head>
+    <body>
+        <!-- 점보트론 -->
+        <div class="jumbotron jumbotron-fluid bg-dark text-light">
+            <div class="container">
+                <h1 class="display-4 text-center">동물의숲 무가격 예측</h1>
+            </div>
+        </div>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/7.13.1/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/7.13.1/firebase-auth.js"></script>
-    <script defer src="/__/firebase/7.13.1/firebase-database.js"></script>
-    <script defer src="/__/firebase/7.13.1/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/7.13.1/firebase-storage.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
+        <!-- 컨텐츠 -->
+        <div id="app" class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="alert" :class="[ alert.label ]" role="alert" v-if="alert.isEnable">
+                        {{ alert.message }}
+                    </div>
+                </div>
+            </div>
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
-    </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+            <div class="row">
+                <!-- buttons -->
+                <div class="col-sm">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" @click="save">저장</button>
+                        <button type="button" class="btn btn-danger" @click="init">초기화</button>
+                    </div>
+                </div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+                <div class="col-sm">
+                    <!-- 구매가 -->
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" for="purchase_select">구매가</span>
+                            </div>
+                            <select class="custom-select" id="purchase_select" v-model="form.purchase">
+                                <option value="0" selected>?</option>
+                                <option v-for="val in 21" :key="val" :value="val + 89">
+                                    {{ val + 89 }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        try {
-          let app = firebase.app();
-          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
-  </body>
+            <div class="row">
+                <div class="col-sm">
+                    <!-- 월요일 -->
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">월요일</span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="AM" v-model="form.monAm">
+                            <input type="number" class="form-control" placeholder="PM" v-model="form.monPm">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm">
+                    <!-- 화요일 -->
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">화요일</span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="AM" v-model="form.tueAm">
+                            <input type="number" class="form-control" placeholder="PM" v-model="form.tuePm">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <!-- 수요일 -->
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">수요일</span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="AM" v-model="form.wedAm">
+                            <input type="number" class="form-control" placeholder="PM" v-model="form.wedPm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm">
+                    <!-- 목요일 -->
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">목요일</span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="AM" v-model="form.thuAm">
+                            <input type="number" class="form-control" placeholder="PM" v-model="form.thuPm">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <!-- 금요일 -->
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">금요일</span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="AM" v-model="form.friAm">
+                            <input type="number" class="form-control" placeholder="PM" v-model="form.friPm">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <!-- 토요일 -->
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">토요일</span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="AM" v-model="form.satAm">
+                            <input type="number" class="form-control" placeholder="PM" v-model="form.satPm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 예측 테이블 -->
+            <div class="row">
+                <div class="col overflow-auto">
+                    <table class="table table-bordered table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">구매가</th>
+                                <th colspan="2">월</th>
+                                <th colspan="2">화</th>
+                                <th colspan="2">수</th>
+                                <th colspan="2">목</th>
+                                <th colspan="2">금</th>
+                                <th colspan="2">토</th>
+                            </tr>
+                            <tr>
+                                <th>오전</th>
+                                <th>오후</th>
+                                <th>오전</th>
+                                <th>오후</th>
+                                <th>오전</th>
+                                <th>오후</th>
+                                <th>오전</th>
+                                <th>오후</th>
+                                <th>오전</th>
+                                <th>오후</th>
+                                <th>오전</th>
+                                <th>오후</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(row, idx) in filteredRows" :key="idx">
+                                <td>
+                                    <p v-if="form.purchase == 0">
+                                        {{ row.purchase.min }}~{{ row.purchase.max }}
+                                    </p>
+                                    <p v-else class="text-success">
+                                        {{ form.purchase }}
+                                    </p>
+                                </td>
+                                <td v-for="(prediction, idx) in row.predictions" :key="idx">
+                                    <p v-if="formDayOfWeekList[idx] == 0">
+                                        {{ prediction.min }}~{{ prediction.max }}
+                                    </p>
+                                    <p v-else class="text-success">
+                                        {{ formDayOfWeekList[idx] }}
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <!-- production version, optimized for size and speed -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="scripts/app.js"></script>
 </html>
