@@ -81,7 +81,7 @@ let app = new Vue({
                 "satPm": 0
             };
             localStorage.clear();
-            showAlert("success", "초기화에 성공하였습니다!")
+            this.showAlert("success", "초기화에 성공하였습니다!")
         },
         range: function (value, obj) {
             if (value === 0 || value === "0") {
