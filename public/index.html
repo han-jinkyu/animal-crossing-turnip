@@ -137,9 +137,10 @@
             <div class="row">
                 <div class="col overflow-auto">
                     <p class="text-right text-danger">* 계산에 따라 값이 약간 차이날 수 있습니다</p>
-                    <table class="table table-bordered table-hover text-center">
+                    <table class="table table-sm table-bordered table-hover text-center">
                         <thead>
                             <tr>
+                                <!-- <th rowspan="2">명칭</th> -->
                                 <th rowspan="2">구매가</th>
                                 <th colspan="2">월</th>
                                 <th colspan="2">화</th>
@@ -164,7 +165,11 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr v-if="filteredRows.length === 0">
+                                <td colspan="13" class="text-center">해당하는 자료가 없습니다</td>
+                            </tr>
                             <tr v-for="(row, idx) in filteredRows" :key="idx">
+                                <!-- <td>이름 {{ idx }}</td> -->
                                 <td>
                                     <p v-if="form.purchase === 0 || form.purchase === '0'">
                                         {{ purchaseRange.min }}~{{ purchaseRange.max }}
