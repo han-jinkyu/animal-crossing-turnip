@@ -115,7 +115,7 @@ let app = new Vue({
             let app = this;
             let request = new XMLHttpRequest();
             request.overrideMimeType("application/json");
-            request.open("GET", "/scripts/predictions.json");
+            request.open("GET", "/data/predictions.json");
             request.onreadystatechange = function () {
                 if (request.readyState != 4) {
                     // not ready
