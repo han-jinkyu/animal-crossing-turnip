@@ -1,4 +1,7 @@
-let app = new Vue({
+import Vue from "vue"
+import predictions from "../data/predictions"
+
+new Vue({
     el: "#app",
     data: {
         purchaseRange: {
@@ -20,7 +23,7 @@ let app = new Vue({
             "satAm": 0, 
             "satPm": 0
         },
-        rows: [],
+        rows: predictions,
         alert: {
             "isEnable": false,
             "message": "",
@@ -111,25 +114,25 @@ let app = new Vue({
             }
             return obj.min <= value && value <= obj.max;
         },
-        loadPridictions: function () {
-            let app = this;
-            let request = new XMLHttpRequest();
-            request.overrideMimeType("application/json");
-            request.open("GET", "/data/predictions.json");
-            request.onreadystatechange = function () {
-                if (request.readyState != 4) {
-                    // not ready
-                    return;
-                }
+        // loadPridictions: function () {
+        //     let app = this;
+        //     let request = new XMLHttpRequest();
+        //     request.overrideMimeType("application/json");
+        //     request.open("GET", "/data/predictions.json");
+        //     request.onreadystatechange = function () {
+        //         if (request.readyState != 4) {
+        //             // not ready
+        //             return;
+        //         }
     
-                if (request.status != "200") {
-                    return console.error("loads error");
-                }
+        //         if (request.status != "200") {
+        //             return console.error("loads error");
+        //         }
     
-                app.rows = JSON.parse(request.responseText);
-            };
-            request.send();
-        },
+        //         app.rows = JSON.parse(request.responseText);
+        //     };
+        //     request.send();
+        // },
         loadFormFromLocalStorage: function () {
             for (let key in this.form) {
                 let value = localStorage.getItem(key);
@@ -148,7 +151,7 @@ let app = new Vue({
         }
     },
     created: function () {
-        this.loadPridictions();
+        // this.loadPridictions();
         this.loadFormFromLocalStorage();
     }
 });

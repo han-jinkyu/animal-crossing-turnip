@@ -1,0 +1,35 @@
+{
+  "name": "animal-crossing-turnip",
+  "version": "1.0.0",
+  "description": "게임 동물의 숲의 무 가격을 예측하는 사이트 https://animal-crossing-turnip.web.app",
+  "main": "",
+  "dependencies": {
+    "@babel/polyfill": "^7.8.7",
+    "babel-loader": "^8.1.0",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "html-webpack-plugin": "^4.0.4",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "dev": "./node_modules/.bin/webpack --mode development",
+    "build": "./node_modules/.bin/webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/han-jinkyu/animal-crossing-turnip.git"
+  },
+  "keywords": [],
+  "author": "Jinkyu Han",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/han-jinkyu/animal-crossing-turnip/issues"
+  },
+  "homepage": "https://github.com/han-jinkyu/animal-crossing-turnip#readme"
+}

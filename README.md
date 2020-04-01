@@ -3,6 +3,9 @@
 https://animal-crossing-turnip.web.app
 
 ## 기술
+### 언어
+- Node.js (v13.12.0)
+
 ### 백엔드
 - Firebase
 
