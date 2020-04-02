@@ -7,199 +7,223 @@
         
         <!-- styles -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <style>[v-cloak] { display:none; }</style>
     </head>
     <body>
-        <!-- 점보트론 -->
-        <div class="jumbotron jumbotron-fluid bg-dark text-light">
-            <div class="container">
-                <h1 class="display-4 text-center">동물의숲 무가격 예측</h1>
-            </div>
-        </div>
-
-        <!-- 컨텐츠 -->
-        <div id="app" class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="alert alert-info" role="alert">
-                        <p class="text-center">공지사항</p>
-                        <p>1. 이 데이터는 튀동숲으로 구성된 데이터를 사용하여 완전하지 않습니다.</p>
-                        <p>2. 현재 사이트는 계산식을 이용한 기능구현을 적용할 예정입니다.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <div class="alert" :class="[ alert.label ]" role="alert" v-if="alert.isEnable">
-                        {{ alert.message }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <!-- buttons -->
-                <div class="col-sm">
-                    <div class="form-group">
-                        <button type="button" class="btn btn-primary" @click="save">저장</button>
-                        <button type="button" class="btn btn-danger" @click="init">초기화</button>
+        <div id="app">
+            <div v-cloak>
+                <!-- 점보트론 -->
+                <div class="jumbotron jumbotron-fluid bg-dark text-light">
+                    <div class="container">
+                        <h1 class="display-4 text-center">{{ getMessage("LBL_TITLE") }}</h1>
                     </div>
                 </div>
 
-                <div class="col-sm">
-                    <!-- 구매가 -->
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" for="purchase_select">구매가</span>
+                <!-- 컨텐츠 -->
+                <div  class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="alert alert-info" role="alert">
+                                <p class="text-center">공지사항</p>
+                                <p>1. 이 데이터는 튀동숲으로 구성된 데이터를 사용하여 완전하지 않습니다.</p>
+                                <p>2. 현재 사이트는 계산식을 이용한 기능구현을 적용할 예정입니다.</p>
                             </div>
-                            <select class="custom-select" id="purchase_select" v-model="form.purchase">
-                                <option value="0" selected>?</option>
-                                <option v-for="val in purchaseRange.max - purchaseRange.min + 1" :key="val" 
-                                    :value="val + purchaseRange.min - 1">
-                                    {{ val + purchaseRange.min - 1 }}
-                                </option>
-                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="alert" :class="[ alert.label ]" role="alert" v-if="alert.isEnable">
+                                {{ alert.message }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- buttons -->
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" @click="save">{{ getMessage("BTN_SAVE") }}</button>
+                                <button type="button" class="btn btn-danger" @click="init">{{ getMessage("BTN_INIT") }}</button>
+                            </div>
+                        </div>
+
+                        <div class="col-sm">
+                            <!-- 구매가 -->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" for="purchase_select">
+                                            {{ getMessage("LBL_PURCHASE_PRICE") }}
+                                        </span>
+                                    </div>
+                                    <select class="custom-select" id="purchase_select" v-model="form.purchase">
+                                        <option value="0" selected>?</option>
+                                        <option v-for="val in purchaseRange.max - purchaseRange.min + 1" :key="val" 
+                                            :value="val + purchaseRange.min - 1">
+                                            {{ val + purchaseRange.min - 1 }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <!-- 월요일 -->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{ getMessage("LBL_MONDAY") }}</span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="AM" v-model="form.monAm">
+                                    <input type="number" class="form-control" placeholder="PM" v-model="form.monPm">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm">
+                            <!-- 화요일 -->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{ getMessage("LBL_TUESDAY") }}</span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="AM" v-model="form.tueAm">
+                                    <input type="number" class="form-control" placeholder="PM" v-model="form.tuePm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <!-- 수요일 -->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{ getMessage("LBL_WEDNESDAY") }}</span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="AM" v-model="form.wedAm">
+                                    <input type="number" class="form-control" placeholder="PM" v-model="form.wedPm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <!-- 목요일 -->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{ getMessage("LBL_THURSDAY") }}</span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="AM" v-model="form.thuAm">
+                                    <input type="number" class="form-control" placeholder="PM" v-model="form.thuPm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <!-- 금요일 -->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{ getMessage("LBL_FRIDAY") }}</span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="AM" v-model="form.friAm">
+                                    <input type="number" class="form-control" placeholder="PM" v-model="form.friPm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <!-- 토요일 -->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">{{ getMessage("LBL_SATURDAY") }}</span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="AM" v-model="form.satAm">
+                                    <input type="number" class="form-control" placeholder="PM" v-model="form.satPm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 예측 테이블 -->
+                    <div class="row">
+                        <div class="col overflow-auto">
+                            <p class="text-left text-danger">* 계산에 따라 값이 약간 차이날 수 있습니다</p>
+                            <table class="table table-sm table-bordered table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <!-- <th rowspan="2">명칭</th> -->
+                                        <th rowspan="2">{{ getMessage("LBL_PURCHASE_PRICE") }}</th>
+                                        <th colspan="2">{{ getMessage("LBL_MONDAY") }}</th>
+                                        <th colspan="2">{{ getMessage("LBL_TUESDAY") }}</th>
+                                        <th colspan="2">{{ getMessage("LBL_WEDNESDAY") }}</th>
+                                        <th colspan="2">{{ getMessage("LBL_THURSDAY") }}</th>
+                                        <th colspan="2">{{ getMessage("LBL_FRIDAY") }}</th>
+                                        <th colspan="2">{{ getMessage("LBL_SATURDAY") }}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ getMessage("LBL_AM") }}</th>
+                                        <th>{{ getMessage("LBL_PM") }}</th>
+                                        <th>{{ getMessage("LBL_AM") }}</th>
+                                        <th>{{ getMessage("LBL_PM") }}</th>
+                                        <th>{{ getMessage("LBL_AM") }}</th>
+                                        <th>{{ getMessage("LBL_PM") }}</th>
+                                        <th>{{ getMessage("LBL_AM") }}</th>
+                                        <th>{{ getMessage("LBL_PM") }}</th>
+                                        <th>{{ getMessage("LBL_AM") }}</th>
+                                        <th>{{ getMessage("LBL_PM") }}</th>
+                                        <th>{{ getMessage("LBL_AM") }}</th>
+                                        <th>{{ getMessage("LBL_PM") }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-if="filteredRows.length === 0">
+                                        <td colspan="13" class="text-center">해당하는 자료가 없습니다</td>
+                                    </tr>
+                                    <tr v-for="(row, idx) in filteredRows" :key="idx">
+                                        <!-- <td>이름 {{ idx }}</td> -->
+                                        <td>
+                                            <p v-if="form.purchase === 0 || form.purchase === '0'">
+                                                {{ purchaseRange.min }}~{{ purchaseRange.max }}
+                                            </p>
+                                            <p v-else class="text-success">
+                                                {{ form.purchase }}
+                                            </p>
+                                        </td>
+                                        <td v-for="(pred, idx) in row" :key="idx">
+                                            <p v-if="formDayOfWeekList[idx] === 0 || formDayOfWeekList[idx] === '0'">
+                                                {{ pred.min }}~{{ pred.max }}
+                                            </p>
+                                            <p v-else class="text-success">
+                                                {{ formDayOfWeekList[idx] }}
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-sm">
-                    <!-- 월요일 -->
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">월요일</span>
+                <footer class="bg-light">
+                    <div class="container mt-5 px-md-4 py-4">
+                        <div class="row px-5">
+                            <div class="col-sm col-md-3 offset-md-1 text-center">
+                                <a href="https://github.com/han-jinkyu/animal-crossing-turnip.git">Github Repo</a>
                             </div>
-                            <input type="number" class="form-control" placeholder="AM" v-model="form.monAm">
-                            <input type="number" class="form-control" placeholder="PM" v-model="form.monPm">
+                            <div class="col-sm col-md-3 offset-md-4 text-center">
+                                <select class="form-control" v-model="lang" @change="changeLanguage">
+                                    <option v-for="item in languageMap" :value="item.key">
+                                        {{ item.value }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-sm">
-                    <!-- 화요일 -->
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">화요일</span>
-                            </div>
-                            <input type="number" class="form-control" placeholder="AM" v-model="form.tueAm">
-                            <input type="number" class="form-control" placeholder="PM" v-model="form.tuePm">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <!-- 수요일 -->
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">수요일</span>
-                            </div>
-                            <input type="number" class="form-control" placeholder="AM" v-model="form.wedAm">
-                            <input type="number" class="form-control" placeholder="PM" v-model="form.wedPm">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm">
-                    <!-- 목요일 -->
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">목요일</span>
-                            </div>
-                            <input type="number" class="form-control" placeholder="AM" v-model="form.thuAm">
-                            <input type="number" class="form-control" placeholder="PM" v-model="form.thuPm">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <!-- 금요일 -->
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">금요일</span>
-                            </div>
-                            <input type="number" class="form-control" placeholder="AM" v-model="form.friAm">
-                            <input type="number" class="form-control" placeholder="PM" v-model="form.friPm">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <!-- 토요일 -->
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">토요일</span>
-                            </div>
-                            <input type="number" class="form-control" placeholder="AM" v-model="form.satAm">
-                            <input type="number" class="form-control" placeholder="PM" v-model="form.satPm">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 예측 테이블 -->
-            <div class="row">
-                <div class="col overflow-auto">
-                    <p class="text-right text-danger">* 계산에 따라 값이 약간 차이날 수 있습니다</p>
-                    <table class="table table-sm table-bordered table-hover text-center">
-                        <thead>
-                            <tr>
-                                <!-- <th rowspan="2">명칭</th> -->
-                                <th rowspan="2">구매가</th>
-                                <th colspan="2">월</th>
-                                <th colspan="2">화</th>
-                                <th colspan="2">수</th>
-                                <th colspan="2">목</th>
-                                <th colspan="2">금</th>
-                                <th colspan="2">토</th>
-                            </tr>
-                            <tr>
-                                <th>오전</th>
-                                <th>오후</th>
-                                <th>오전</th>
-                                <th>오후</th>
-                                <th>오전</th>
-                                <th>오후</th>
-                                <th>오전</th>
-                                <th>오후</th>
-                                <th>오전</th>
-                                <th>오후</th>
-                                <th>오전</th>
-                                <th>오후</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-if="filteredRows.length === 0">
-                                <td colspan="13" class="text-center">해당하는 자료가 없습니다</td>
-                            </tr>
-                            <tr v-for="(row, idx) in filteredRows" :key="idx">
-                                <!-- <td>이름 {{ idx }}</td> -->
-                                <td>
-                                    <p v-if="form.purchase === 0 || form.purchase === '0'">
-                                        {{ purchaseRange.min }}~{{ purchaseRange.max }}
-                                    </p>
-                                    <p v-else class="text-success">
-                                        {{ form.purchase }}
-                                    </p>
-                                </td>
-                                <td v-for="(pred, idx) in row" :key="idx">
-                                    <p v-if="formDayOfWeekList[idx] === 0 || formDayOfWeekList[idx] === '0'">
-                                        {{ pred.min }}~{{ pred.max }}
-                                    </p>
-                                    <p v-else class="text-success">
-                                        {{ formDayOfWeekList[idx] }}
-                                    </p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                </footer>
             </div>
         </div>
     </body>

@@ -20,7 +20,7 @@
   "scripts": {
     "dev": "./node_modules/.bin/webpack --mode development",
     "build": "./node_modules/.bin/webpack --mode production",
-    "serve": "firebase serve --only hosting"
+    "serve": "npm run build && firebase serve --only hosting"
   },
   "repository": {
     "type": "git",
