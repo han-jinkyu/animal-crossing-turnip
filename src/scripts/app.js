@@ -1,6 +1,6 @@
-import Vue from "vue"
-import predictions from "../data/predictions"
-import languages from "../data/languages"
+import Vue from "vue";
+import predictions from "../data/predictions";
+import languages from "../data/languages";
 
 new Vue({
     el: "#app",
