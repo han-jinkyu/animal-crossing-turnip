@@ -144,7 +144,7 @@ new Vue({
         },
         loadLanguageFromLocalStorage: function () {
             let lang = localStorage.getItem("lang");
-            this.lang = lang ? lang : "en";
+            this.lang = lang ? lang : (navigator.language || navigator.userLanguage).substr(0, 2);
         }
     },
     created: function () {
