@@ -1,5 +1,6 @@
 import Vue from "vue"
 import predictions from "../data/predictions"
+import languages from "../data/languages"
 
 new Vue({
     el: "#app",
@@ -28,7 +29,8 @@ new Vue({
             "isEnable": false,
             "message": "",
             "label": ""
-        }
+        },
+        lang: "en"
     },
     computed: {
         formDayOfWeekList: function () {
@@ -80,6 +82,10 @@ new Vue({
                     }
                     return true;
                 });
+        },
+        languageMap: function () {
+            return Object.keys(languages)
+                .map(lang => ({ "key": lang, "value": languages[lang].name }));
         }
     },
     methods: {
@@ -114,25 +120,6 @@ new Vue({
             }
             return obj.min <= value && value <= obj.max;
         },
-        // loadPridictions: function () {
-        //     let app = this;
-        //     let request = new XMLHttpRequest();
-        //     request.overrideMimeType("application/json");
-        //     request.open("GET", "/data/predictions.json");
-        //     request.onreadystatechange = function () {
-        //         if (request.readyState != 4) {
-        //             // not ready
-        //             return;
-        //         }
-    
-        //         if (request.status != "200") {
-        //             return console.error("loads error");
-        //         }
-    
-        //         app.rows = JSON.parse(request.responseText);
-        //     };
-        //     request.send();
-        // },
         loadFormFromLocalStorage: function () {
             for (let key in this.form) {
                 let value = localStorage.getItem(key);
@@ -148,10 +135,20 @@ new Vue({
             setTimeout(function () {
                 app.alert.isEnable = false;
             }, 3000);
+        },
+        getMessage: function (key) {
+            return languages[this.lang][key] ? languages[this.lang][key] : languages["en"][key];
+        },
+        changeLanguage: function () {
+            localStorage.setItem("lang", this.lang);
+        },
+        loadLanguageFromLocalStorage: function () {
+            let lang = localStorage.getItem("lang");
+            this.lang = lang ? lang : "en";
         }
     },
     created: function () {
-        // this.loadPridictions();
         this.loadFormFromLocalStorage();
+        this.loadLanguageFromLocalStorage();
     }
 });

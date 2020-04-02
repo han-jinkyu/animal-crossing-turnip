@@ -1,0 +1,32 @@
+{
+    "en": {
+        "name": "English",
+        "BTN_SAVE": "Save",
+        "BTN_INIT": "Initialize",
+        "LBL_TITLE": "Animal Crossing Turnip Price Predictions",
+        "LBL_PURCHASE_PRICE": "Purchase Price",
+        "LBL_MONDAY": "Monday",
+        "LBL_TUESDAY": "Tuesday",
+        "LBL_WEDNESDAY": "Wednesday",
+        "LBL_THURSDAY": "Thursday",
+        "LBL_FRIDAY": "Friday",
+        "LBL_SATURDAY": "Saturday",
+        "LBL_AM": "AM",
+        "LBL_PM": "PM"
+    },
+    "ko": {
+        "name": "한국어",
+        "BTN_SAVE": "저장",
+        "BTN_INIT": "초기화",
+        "LBL_TITLE": "동물의숲 순무 가격 예측",
+        "LBL_PURCHASE_PRICE": "구매가",
+        "LBL_MONDAY": "월요일",
+        "LBL_TUESDAY": "화요일",
+        "LBL_WEDNESDAY": "수요일",
+        "LBL_THURSDAY": "목요일",
+        "LBL_FRIDAY": "금요일",
+        "LBL_SATURDAY": "토요일",
+        "LBL_AM": "오전",
+        "LBL_PM": "오후"
+    }
+}
