@@ -137,7 +137,7 @@ new Vue({
             }, 3000);
         },
         getMessage: function (key) {
-            return languages[this.lang][key] ? languages[this.lang][key] : languages["en"][key];
+            return this.lang in languages ? languages[this.lang][key] : languages["en"][key];
         },
         changeLanguage: function () {
             localStorage.setItem("lang", this.lang);
