@@ -12,7 +12,9 @@
         "LBL_FRIDAY": "Fri",
         "LBL_SATURDAY": "Sat",
         "LBL_AM": "AM",
-        "LBL_PM": "PM"
+        "LBL_PM": "PM",
+        "MSG_SAVE_SUCCESSFULLY": "Save successfully!",
+        "MSG_INIT_SUCCESSFULLY": "Initialize Successfully!"
     },
     "ko": {
         "name": "한국어",
@@ -27,6 +29,8 @@
         "LBL_FRIDAY": "금요일",
         "LBL_SATURDAY": "토요일",
         "LBL_AM": "오전",
-        "LBL_PM": "오후"
+        "LBL_PM": "오후",
+        "MSG_SAVE_SUCCESSFULLY": "저장에 성공했습니다!",
+        "MSG_INIT_SUCCESSFULLY": "초기화에 성공했습니다!"
     }
 }

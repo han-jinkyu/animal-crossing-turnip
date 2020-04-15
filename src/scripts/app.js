@@ -93,7 +93,7 @@ new Vue({
             for (let key in this.form) {
                 localStorage.setItem(key, this.form[key]);
             }
-            this.showAlert("success", "저장에 성공하였습니다!");
+            this.showAlert("success", this.getMessage("MSG_SAVE_SUCCESSFULLY"));
         },
         init: function () {
             this.form = { 
@@ -112,7 +112,7 @@ new Vue({
                 "satPm": 0
             };
             localStorage.clear();
-            this.showAlert("success", "초기화에 성공하였습니다!")
+            this.showAlert("success", this.getMessage("MSG_INIT_SUCCESSFULLY"))
         },
         range: function (value, obj) {
             if (value === 0 || value === "0") {
