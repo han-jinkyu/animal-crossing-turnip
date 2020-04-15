@@ -5,12 +5,12 @@ import languages from "../data/languages";
 new Vue({
     el: "#app",
     data: {
-        purchaseRange: {
+        sellingRange: {
             "min": 90,
             "max": 110
         },
         form: { 
-            "purchase": 0, 
+            "selling": 0, 
             "monAm": 0, 
             "monPm": 0, 
             "tueAm": 0, 
@@ -50,15 +50,15 @@ new Vue({
             ];
         },
         filteredRows: function () {
-            let currentStep = this.form.purchase - this.purchaseRange.min;
-            let stepCount = this.purchaseRange.max - this.purchaseRange.min + 1;
+            let currentStep = this.form.selling - this.sellingRange.min;
+            let stepCount = this.sellingRange.max - this.sellingRange.min + 1;
             let values = this.formDayOfWeekList;
             return this.rows
                 .map(row => {
                     return row.predictions
                         .map(pred => {
-                            if (this.form.purchase === 0 || 
-                                this.form.purchase === '0') {
+                            if (this.form.selling === 0 || 
+                                this.form.selling === '0') {
                                 return {
                                     "min": pred.lowMin,
                                     "max": pred.highMax
@@ -97,7 +97,7 @@ new Vue({
         },
         init: function () {
             this.form = { 
-                "purchase": 0, 
+                "selling": 0, 
                 "monAm": 0, 
                 "monPm": 0, 
                 "tueAm": 0, 

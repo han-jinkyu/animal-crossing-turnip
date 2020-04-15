@@ -53,15 +53,15 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" for="purchase_select">
-                                            {{ getMessage("LBL_PURCHASE_PRICE") }}
+                                        <span class="input-group-text" for="selling_select">
+                                            {{ getMessage("LBL_SELLING_PRICE") }}
                                         </span>
                                     </div>
-                                    <select class="custom-select" id="purchase_select" v-model="form.purchase">
+                                    <select class="custom-select" id="selling_select" v-model="form.selling">
                                         <option value="0" selected>?</option>
-                                        <option v-for="val in purchaseRange.max - purchaseRange.min + 1" :key="val" 
-                                            :value="val + purchaseRange.min - 1">
-                                            {{ val + purchaseRange.min - 1 }}
+                                        <option v-for="val in sellingRange.max - sellingRange.min + 1" :key="val" 
+                                            :value="val + sellingRange.min - 1">
+                                            {{ val + sellingRange.min - 1 }}
                                         </option>
                                     </select>
                                 </div>
@@ -156,7 +156,7 @@
                                 <thead>
                                     <tr>
                                         <!-- <th rowspan="2">명칭</th> -->
-                                        <th rowspan="2">{{ getMessage("LBL_PURCHASE_PRICE") }}</th>
+                                        <th rowspan="2">{{ getMessage("LBL_SELLING_PRICE") }}</th>
                                         <th colspan="2">{{ getMessage("LBL_MONDAY") }}</th>
                                         <th colspan="2">{{ getMessage("LBL_TUESDAY") }}</th>
                                         <th colspan="2">{{ getMessage("LBL_WEDNESDAY") }}</th>
@@ -186,11 +186,11 @@
                                     <tr v-for="(row, idx) in filteredRows" :key="idx">
                                         <!-- <td>이름 {{ idx }}</td> -->
                                         <td>
-                                            <p v-if="form.purchase === 0 || form.purchase === '0'">
-                                                {{ purchaseRange.min }}~{{ purchaseRange.max }}
+                                            <p v-if="form.selling === 0 || form.selling === '0'">
+                                                {{ sellingRange.min }}~{{ sellingRange.max }}
                                             </p>
                                             <p v-else class="text-success">
-                                                {{ form.purchase }}
+                                                {{ form.selling }}
                                             </p>
                                         </td>
                                         <td v-for="(pred, idx) in row" :key="idx">
