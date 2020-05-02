@@ -53,10 +53,6 @@ class ExpressionPattern3 extends Expression {
         return prices;
     }
 
-    /* 다른 클래스 */
-    
-    /* 다른 클래스 */
-
     /**
      * 이름
      */

@@ -37,8 +37,6 @@ class ExpressionWave extends Expression {
         let prices = new Array(DayOfWeek.AllDayLength);
 
         // 초기화
-        prices[0] = basePrice;
-        prices[1] = basePrice;
         for (let i = 0; i < DayOfWeek.AllDayLength; i++) {
             prices[i] = this.userPrices[i] ? this.userPrices[i] : 0;
         }
