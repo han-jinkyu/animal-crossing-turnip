@@ -23,15 +23,6 @@
                 <div  class="container">
                     <div class="row">
                         <div class="col">
-                            <div class="alert alert-info" role="alert">
-                                <p class="text-center">공지사항</p>
-                                <p>1. 이 데이터는 튀동숲으로 구성된 데이터를 사용하여 완전하지 않습니다.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col">
                             <div class="alert" :class="[ alert.label ]" role="alert" v-if="alert.isEnable">
                                 {{ alert.message }}
                             </div>
