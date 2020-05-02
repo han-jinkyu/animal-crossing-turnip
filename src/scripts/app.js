@@ -1,87 +1,28 @@
 import Vue from "vue";
-import predictions from "../data/predictions";
 import languages from "../data/languages";
+import TurnipPrices from "./TurnipPrices";
+import Price from "./Price";
+import DayOfWeek from "./DayOfWeek";
 
 new Vue({
     el: "#app",
     data: {
-        sellingRange: {
-            "min": 90,
-            "max": 110
-        },
-        form: { 
-            "selling": 0, 
-            "monAm": 0, 
-            "monPm": 0, 
-            "tueAm": 0, 
-            "tuePm": 0, 
-            "wedAm": 0, 
-            "wedPm": 0, 
-            "thuAm": 0, 
-            "thuPm": 0, 
-            "friAm": 0, 
-            "friPm": 0, 
-            "satAm": 0, 
-            "satPm": 0
-        },
-        rows: predictions,
+        DayOfWeek: DayOfWeek,
+        PurchasePriceRange: new Price(90, 110),
+        tableRows: [],
+        userPurchasePrice: 0,
+        userPrices: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         alert: {
-            "isEnable": false,
-            "message": "",
-            "label": ""
+            isEnable: false,
+            message: "",
+            label: ""
         },
         lang: "en"
     },
     computed: {
-        formDayOfWeekList: function () {
-            return [ 
-                this.form.monAm,
-                this.form.monPm, 
-                this.form.tueAm, 
-                this.form.tuePm, 
-                this.form.wedAm, 
-                this.form.wedPm, 
-                this.form.thuAm, 
-                this.form.thuPm, 
-                this.form.friAm, 
-                this.form.friPm, 
-                this.form.satAm,
-                this.form.satPm
-            ];
-        },
         filteredRows: function () {
-            let currentStep = this.form.selling - this.sellingRange.min;
-            let stepCount = this.sellingRange.max - this.sellingRange.min + 1;
-            let values = this.formDayOfWeekList;
-            return this.rows
-                .map(row => {
-                    return row.predictions
-                        .map(pred => {
-                            if (this.form.selling === 0 || 
-                                this.form.selling === '0') {
-                                return {
-                                    "min": pred.lowMin,
-                                    "max": pred.highMax
-                                };
-                            }
-
-                            let minStepValue = (pred.highMin - pred.lowMin + 1) / stepCount;
-                            let maxStepValue = (pred.highMax - pred.lowMax + 1) / stepCount;
-
-                            return {
-                                "min": pred.lowMin + Math.round(minStepValue * currentStep),
-                                "max": pred.lowMax + Math.ceil(maxStepValue * currentStep)
-                            };
-                        });
-                })
-                .filter(row => {
-                    for (let idx = 0; idx < row.length; idx++) {
-                        if (!this.range(values[idx], row[idx])) {
-                            return false;
-                        }
-                    }
-                    return true;
-                });
+            return this.tableRows
+                .filter(row => row.isBetweenPrices(this.userPrices));
         },
         languageMap: function () {
             return Object.keys(languages)
@@ -90,41 +31,25 @@ new Vue({
     },
     methods: {
         save: function () {
-            for (let key in this.form) {
-                localStorage.setItem(key, this.form[key]);
-            }
+            localStorage.setItem("userPurchasePrice", this.userPurchasePrice);
+            localStorage.setItem("userPrices", this.userPrices);
             this.showAlert("success", this.getMessage("MSG_SAVE_SUCCESSFULLY"));
         },
         init: function () {
-            this.form = { 
-                "selling": 0, 
-                "monAm": 0, 
-                "monPm": 0, 
-                "tueAm": 0, 
-                "tuePm": 0, 
-                "wedAm": 0, 
-                "wedPm": 0, 
-                "thuAm": 0, 
-                "thuPm": 0, 
-                "friAm": 0, 
-                "friPm": 0, 
-                "satAm": 0, 
-                "satPm": 0
-            };
+            this.userPurchasePrice = 0;
+            this.userPrices = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             localStorage.clear();
             this.showAlert("success", this.getMessage("MSG_INIT_SUCCESSFULLY"))
         },
-        range: function (value, obj) {
-            if (value === 0 || value === "0") {
-                return true;
-            }
-            return obj.min <= value && value <= obj.max;
-        },
         loadFormFromLocalStorage: function () {
-            for (let key in this.form) {
-                let value = localStorage.getItem(key);
-                this.form[key] = value === null ? 0 : value;
-            }
+            // TODO: 정리 필요
+            let userPurchasePrice = localStorage.getItem("userPurchasePrice");
+            this.userPurchasePrice = parseInt(userPurchasePrice) ? userPurchasePrice : 0;
+
+            let userPrices = localStorage.getItem("userPrices");
+            this.userPrices = userPrices ? userPrices.split(",").map(p => parseInt(p)) : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+            console.log(this.userPrices);
         },
         showAlert: function (label, message) {
             this.alert.label = `alert-${label}`;
@@ -150,5 +75,10 @@ new Vue({
     created: function () {
         this.loadFormFromLocalStorage();
         this.loadLanguageFromLocalStorage();
+
+        // rows
+        let turnipPrices = new TurnipPrices();
+        let exprs = turnipPrices.createExpressions(this.userPrices);
+        this.tableRows = exprs.map(expr => expr.toTableRow());
     }
 });
